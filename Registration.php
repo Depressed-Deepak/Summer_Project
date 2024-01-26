@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Created By CodingLab - www.codinglabweb.com -->
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
@@ -17,20 +17,25 @@ body{
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  background-image: url('pictures/registrationImage.jpg');
+  background-size: cover;
+
 }
 .container{
   max-width: 700px;
   width: 100%;
-  background-color: #fff;
+  background-color: #9b59b6;
   padding: 25px 30px;
   border-radius: 5px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 10px rgba(0,0,0,1);
 }
 .container .title{
   font-size: 25px;
   font-weight: 500;
   position: relative;
+  font-weight: bold;
+  font-style: oblique;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .container .title::before{
   content: "";
@@ -53,6 +58,7 @@ form .user-details .input-box{
   width: calc(100% / 2 - 20px);
 }
 form .input-box span.details{
+
   display: block;
   font-weight: 500;
   margin-bottom: 5px;
@@ -116,11 +122,12 @@ form .input-box span.details{
    border: none;
    color: #fff;
    font-size: 18px;
-   font-weight: 500;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-weight: 700;
    letter-spacing: 1px;
    cursor: pointer;
    transition: all 0.3s ease;
-   background: linear-gradient(135deg, #71b7e6, #9b59b6);
+   background: linear-gradient(135deg, #2AAA8A, #9b59b6);
  }
  form .button input:hover{
   /* transform: scale(0.99); */
@@ -155,44 +162,49 @@ form .user-details .input-box{
    </head>
 <body>
   <div class="container">
-    <div class="title">Registration</div>
+    <div class="title">Registration Form</div>
     <div class="content">
       <form action="#">
         <div class="user-details">
           <div class="input-box">
-            <span class="details">Full Name</span>
+            <span class="details" style="font-weight: bold;">Full Name</span>
             <input type="text" placeholder="Enter your name" required>
           </div>
-          <div class="input-box">
-            <span class="details">Age</span>
-            <input type="number" placeholder="Enter your Age" required>
+          <div class="input-box" >
+            <span class="details"style="font-weight: bold;" >Age</span>
+            <input type="number" placeholder="Enter your Age" min="18" max="99" required>
           </div>
           <div class="input-box">
-            <span class="details">Email</span>
+            <span class="details" style="font-weight: bold;">Email</span>
             <input type="text" placeholder="Enter your email" required>
           </div>
           <div class="input-box">
-            <span class="details">Phone Number</span>
+            <span class="details" style="font-weight: bold;">Phone Number</span>
             <input type="text" placeholder="Enter your number" required>
           </div>
           <div class="input-box">
-            <span class="details">Password</span>
+            <span class="details" style="font-weight: bold;">Password</span>
             <input type="text" placeholder="Enter your password" required>
           </div>
           <div class="input-box">
-            <span class="details">Confirm Password</span>
+            <span class="details" style="font-weight: bold;">Confirm Password</span>
             <input type="text" placeholder="Confirm your password" required>
           </div>
           <div class="input-box">
-            <span class="details">Address</span>
+            <span class="details" style="font-weight: bold;">Address</span>
             <input type="text" placeholder="Confirm your Address" required>
           </div>
+          <div class="input-box">
+            <span class="details" style="font-weight: bold;">Occupation</span>
+            <input type="text" placeholder="What is your Occupation ?" required>
+          </div>
+
         </div>
-        <div class="gender-details">
+        <div class="gender-details" style="font-weight: bold;">
           <input type="radio" name="gender" id="dot-1">
           <input type="radio" name="gender" id="dot-2">
           <input type="radio" name="gender" id="dot-3">
-          <span class="gender-title">Gender</span>
+          <span class="gender-title" style="font-weight: bold;">Gender</span>
           <div class="category">
             <label for="dot-1">
             <span class="dot one"></span>
@@ -216,7 +228,4 @@ form .user-details .input-box{
   </div>
 
 </body>
-
-
-
 </html>

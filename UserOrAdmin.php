@@ -17,8 +17,9 @@ $url = 'pictures/newimage.png'; // Replace with the actual path to your image
             padding: 20px;
             background-image: url('<?php echo $url; ?>');
             background-size: cover;
+            align-items: center;
+            display: flex;
             
-            color: #fff;
         }
 
         .rectangle-container {

@@ -82,7 +82,7 @@
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-            <div style="padding: 5px;"> Don't Have an Account, <a href="https://www.google.com">Sign-Up</a></div>
+            <div style="padding: 5px;"> Don't Have an Account, <a href="Registration.php" target="_blank">Sign-Up</a></div>
             <button type="submit">Login</button>
         </form>
     </div>
