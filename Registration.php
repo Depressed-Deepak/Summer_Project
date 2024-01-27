@@ -59,23 +59,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["password"])) {
         $passwordErr = "Password is required";
     } else {
-        $password = test_input($_POST["password"]);
+        $unencryptedPassword = test_input($_POST["password"]);
+        $password = password_hash($unencryptedPassword, PASSWORD_DEFAULT);
+    
         // check if password is at least 8 characters long
-        if (strlen($password) < 8) {
+        if (strlen($unencryptedPassword) < 8) {
             $passwordErr = "Password must be at least 8 characters long";
         }
     }
-
+    
     // Validate confirm password
     if (empty($_POST["cpassword"])) {
         $cpasswordErr = "Confirm password is required";
     } else {
         $cpassword = test_input($_POST["cpassword"]);
-        // check if confirm password matches password
-        if ($cpassword != $password) {
+    
+        // Check if confirm password matches unhashed password
+        if (!password_verify($cpassword, $password)) {
             $cpasswordErr = "Confirm password does not match password";
         }
     }
+    
 
     // Validate address
     if (empty($_POST["address"])) {
