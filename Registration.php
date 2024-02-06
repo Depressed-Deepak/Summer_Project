@@ -3,7 +3,8 @@
 $nameErr = $ageErr = $emailErr = $phoneErr = $passwordErr = $cpasswordErr = $addressErr = $occupationErr = $genderErr = "";
 $name = $age = $email = $phone = $password = $cpassword = $address = $occupation = $gender = "";
 
-function test_input($data) {
+function test_input($data)
+{
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
@@ -59,27 +60,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["password"])) {
         $passwordErr = "Password is required";
     } else {
-        $unencryptedPassword = test_input($_POST["password"]);
-        $password = password_hash($unencryptedPassword, PASSWORD_DEFAULT);
-    
         // check if password is at least 8 characters long
+        $unencryptedPassword = test_input($_POST["password"]);
         if (strlen($unencryptedPassword) < 8) {
             $passwordErr = "Password must be at least 8 characters long";
+        } else {
+            $password = $unencryptedPassword;
         }
     }
-    
+
     // Validate confirm password
     if (empty($_POST["cpassword"])) {
         $cpasswordErr = "Confirm password is required";
     } else {
+        // check if confirm password matches password
         $cpassword = test_input($_POST["cpassword"]);
-    
-        // Check if confirm password matches unhashed password
-        if (!password_verify($cpassword, $password)) {
-            $cpasswordErr = "Confirm password does not match password";
+        if (empty($password) || $cpassword !== $password) {
+            $cpasswordErr = "Passwords do not match";
+        } else {
+            $password = $cpassword;
         }
     }
-    
 
     // Validate address
     if (empty($_POST["address"])) {
@@ -111,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
-            $stmt = $conn->prepare("insert into db_table(`Full_Name`, `age`, `email` , `Phone_Number`, `Password`, `Address`, `Occupation`,`Gender`)
+            $stmt = $conn->prepare("insert into db_table(`username`, `age`, `email` , `Phone_Number`, `Password`, `Address`, `Occupation`,`Gender`)
             values(?,?,?,?,?,?,?,?)");
 
             $stmt->bind_param("sissssss", $name, $age, $email, $phone, $password, $address, $occupation, $gender);
@@ -122,6 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <script>
                 alert('Data Stored Successfully')
             </script>
+
             </html>
 <?php
             $stmt->close();
@@ -161,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="input-box">
                         <span class="details" style="font-weight: bold;">Age</span>
-                        <input type="number" placeholder="Enter your Age" min="18" max="99" name="age" required>
+                        <input type="text" placeholder="Enter your Age" name="age" required>
                         <span class="error"><?php echo $ageErr; ?></span>
                     </div>
 
@@ -230,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Already have an account? Link -->
             <div style="margin-top: 20px; text-align: center;">
-                <p style="font-weight: 400;">Already have an account? <a href="userLogin.php" style="color: white; font-weight: bold;">Login here</a></p>
+                <p style="font-weight: 400;">Already have an account? <a href="userLogin.php" target="_blank" style="color: white; font-weight: bold;">Login here</a></p>
             </div>
         </div>
     </div>

@@ -1,33 +1,40 @@
-<?php      
-    include('connection.php');  
-    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+<?php
+
+include ('connection.php');
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];  
     $password = $_POST['password'];  
-      
-        //to prevent from mysqli injection  
-        $username = stripcslashes($username);  
-        $password = stripcslashes($password);  
-        $username = mysqli_real_escape_string($conn, $username);  
-        $password = mysqli_real_escape_string($conn, $password);  
-      
-        $sql = "select *from db_table where Full_Name = '$username' and Password = '$password'";  
-        $result = mysqli_query($conn, $sql);  
-        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);  
-        $count = mysqli_num_rows($result);  
-          
-        if($count == 1){  
-             // Login successful, redirect to dashboard.php
-             header("Location: dashboard.php");
-             exit();
+
+    $sql = "SELECT * FROM db_table WHERE username = ?";  
+
+    if ($stmt = mysqli_prepare($conn, $sql)) {
+        mysqli_stmt_bind_param($stmt, "s", $username);  
+        mysqli_stmt_execute($stmt);  
+    
+        $result = mysqli_stmt_get_result($stmt);  
+    
+        if ($result && mysqli_num_rows($result) == 1) {
+            $row = mysqli_fetch_assoc($result);
+            $storedPassword = $row['Password'];
+    
+            // Verify the entered password with the stored password from the database
+            if ($password === $storedPassword) {  
+                header("Location: dashboard.php");
+                exit();
+            } else {  
+                // Invalid password
+                echo '<script> alert("Invalid username or password."); </script>';
+            }  
+        } else {  
+            // Invalid username
+            echo '<script> alert("Invalid username or password."); </script>';
         }  
-        else{  ?>
-        <html> <script> alert('Invalid username or password.'); </script> </html>
-        
-        <?php
-        }  
-    }   
- 
-?> 
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
+}
+?>
 
 
 <!DOCTYPE html>
