@@ -60,7 +60,6 @@
         <a href="#">Students</a>
         <a href="#">Rooms</a>
         <a href="#">Reports</a>
-        <a href="seatBook.php" style="padding-left: 100px;">Book a Seat</a>
         <a href="logout.php">Logout</a>
     </nav>
 

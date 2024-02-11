@@ -1,6 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+include('connection.php');
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['Username'];
+    $password = $_POST['Password'];
+
+    $sql = "SELECT * FROM admin_table WHERE username = ? AND password = ?";
+
+    if ($stmt = mysqli_prepare($conn, $sql)) {
+        mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if ($result && mysqli_num_rows($result) == 1) {
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            // Invalid username or password
+            echo '<script> alert("Invalid username or password."); </script>';
+        }
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
+}
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +47,7 @@
             background-size: cover;
             background-position: center;
             font-weight: bolder;
-            
+
         }
 
         .login-container {
@@ -73,12 +101,11 @@
 
     <div class="login-container">
         <h2>Admin Sign-in</h2>
-        <form action="process_login.php" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-
+            <input type="text" id="username" name="Username" required>
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="Password" required>
 
             <button type="submit">Login</button>
         </form>

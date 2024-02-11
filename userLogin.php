@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
             // Verify the entered password with the stored password from the database
             if ($password === $storedPassword) {  
-                header("Location: dashboard.php");
+                header("Location: seatBook.php");
                 exit();
             } else {  
                 // Invalid password

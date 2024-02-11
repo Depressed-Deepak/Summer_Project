@@ -141,7 +141,6 @@ $url = 'pictures/newimage.png'; // Replace with the actual path to your image
     });
 </script>
 
-
 </body>
 
 </html>
