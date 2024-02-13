@@ -1,5 +1,8 @@
 <?php
 
+// Start session
+session_start();
+
 include ('connection.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,9 +22,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $storedPassword = $row['Password'];
     
             // Verify the entered password with the stored password from the database
-            if ($password === $storedPassword) {  
+            if ($password === $storedPassword) { 
+
+                // Start session and store username
+                $_SESSION['username'] = $username;
                 header("Location: seatBook.php");
+
                 exit();
+
             } else {  
                 // Invalid password
                 echo '<script> alert("Invalid username or password."); </script>';

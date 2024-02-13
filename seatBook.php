@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+session_start();
+
+// Check if the username is set in the session
+if (isset($_SESSION['username'])) {
+    // Split the full name by space
+    $nameParts = explode(' ', $_SESSION['username']);
+
+    // Get the first part of the name (the first name)
+    $firstName = strtoupper($nameParts[0]);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Set session variables
+    $_SESSION['confirmation_message'] = "Congratulations!! Your data has been entered.";
+
+    // Storing the message in a local variable
+    $message = "Congratulations!! Your data has been entered.";
+
+    // Display an alert message
+    echo '<script>alert("' . $message . '");</script>';
+
+    // Redirect to another page
+    echo '<script>window.location.href = "userOrAdmin.php";</script>';
+    exit(); // Ensure that no other code is executed after the redirection
+}
+?>
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,7 +112,7 @@
 <body>
 
     <div class="container">
-        <h1>WELCOME</h1>
+        <h1>WELCOME <?php echo $firstName . ',' ?></h1>
         <p style="font-size: larger;font-weight:bold; font-family: sans-serif;">How many seat would you like to book?</p>
         <div class="number-box">
 
@@ -93,80 +122,72 @@
         </div>
     </div>
 
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['enter'])) {
-        echo '<script>alert("Congratulations!! Your data has been entered.");</script>';
-    ?>
+
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <input type="submit" class="button" id="enter" value="Enter">
+
+
+
+        <table class="table" border="3px" style="color:aliceblue;">
+            <thead>
+                <tr>
+                    <th>Seat Number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Available</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Occupied</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Available</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Available</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Occupied</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+        <!-- <script src="SeatBookscript.js"></script> -->
         <script>
-            setTimeout(function() {
-                window.close();
-            }, 1000); // Close the window after 1 second
-        </script>
-    <?php
-        header("Location: userLogin.php");
-        exit();
-    }
-    ?>
+            const numberInput = document.getElementById('number');
+            const increaseBtn = document.getElementById('increase');
+            const decreaseBtn = document.getElementById('decrease');
+            const enter = document.getElementById('enter');
 
-    <form  method="post">
-    <input type="submit" class="button" id="enter" value="Enter">
+            increaseBtn.addEventListener('click', () => {
+                const currentValue = parseInt(numberInput.value);
+                if (currentValue < 5) {
+                    numberInput.value = parseInt(numberInput.value) + 1;
+                }
+
+            });
+
+            decreaseBtn.addEventListener('click', () => {
+                const currentValue = parseInt(numberInput.value);
+                if (currentValue > 1) {
+                    numberInput.value = currentValue - 1;
+                }
+            });
+        </script>
+
+        <form action="admin.php" method="post">
+            <input type="hidden" name="number" value="">
+            <input type="hidden" name="username" value="username">
+        </form>
     </form>
-
-
-    <table class="table" border="3px" style="color:aliceblue;">
-        <thead>
-            <tr>
-                <th>Seat Number</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Available</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Occupied</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Available</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Available</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Occupied</td>
-            </tr>
-            <!-- Add more rows as needed -->
-        </tbody>
-    </table>
-    <!-- <script src="SeatBookscript.js"></script> -->
-    <script>
-        const numberInput = document.getElementById('number');
-        const increaseBtn = document.getElementById('increase');
-        const decreaseBtn = document.getElementById('decrease');
-        const enter = document.getElementById('enter');
-
-        increaseBtn.addEventListener('click', () => {
-            const currentValue = parseInt(numberInput.value);
-            if (currentValue < 5) {
-                numberInput.value = parseInt(numberInput.value) + 1;
-            }
-
-        });
-
-        decreaseBtn.addEventListener('click', () => {
-            const currentValue = parseInt(numberInput.value);
-            if (currentValue > 1) {
-                numberInput.value = currentValue - 1;
-            }
-        });
-        </script>
-
 </body>
 
 </html>
