@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Start session and store username
                 $_SESSION['username'] = $username;
+                
                 header("Location: seatBook.php");
 
                 exit();

@@ -1,6 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
 
+if(isset($_POST['submit'])) {
+    echo "<h1>{$_SESSION['username']} has booked {$_SESSION['inputvalue']} seats.";
+}
+
+?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

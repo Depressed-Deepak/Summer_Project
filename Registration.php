@@ -104,7 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // If there are no validation errors, proceed with database insertion
-    if (empty($nameErr) && empty($ageErr) && empty($emailErr) && empty($phoneErr) && empty($passwordErr) && empty($cpasswordErr) && empty($addressErr) && empty($occupationErr) && empty($genderErr)) {
+    if (empty($nameErr) && empty($ageErr) && empty($emailErr) && empty($phoneErr) && empty($passwordErr) && empty($cpasswordErr)
+     && empty($addressErr) && empty($occupationErr) && empty($genderErr)) {
         // Create connection
         $conn = new mysqli("localhost", "root", "", "summer_project");
 
