@@ -3,6 +3,7 @@
 
 <?php
 include('connection.php');
+session_start(); // Start the session
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['Username'];
@@ -17,14 +18,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = mysqli_stmt_get_result($stmt);
 
         if ($result && mysqli_num_rows($result) == 1) {
+            // Set session variable
+            $_SESSION['username'] = $username;
+
+            // Redirect to dashboard
             header("Location: dashboard.php");
             exit();
         } else {
             // Invalid username or password
-            echo '<script> alert("Invalid username or password."); </script>';
+            $error_message = "Invalid username or password.";
         }
+
+        mysqli_stmt_close($stmt);
     } else {
-        echo "Error: " . mysqli_error($conn);
+        $error_message = "Error: " . mysqli_error($conn);
     }
 }
 ?>
@@ -47,7 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-size: cover;
             background-position: center;
             font-weight: bolder;
-
         }
 
         .login-container {
@@ -98,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-
     <div class="login-container">
         <h2>Admin Sign-in</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -106,11 +111,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="username" name="Username" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="Password" required>
-
             <button type="submit">Login</button>
         </form>
+        <?php
+        if (!empty($error_message)) {
+            echo '<p style="color:red;">' . htmlspecialchars($error_message) . '</p>';
+        }
+        ?>
     </div>
-
 </body>
 
 </html>

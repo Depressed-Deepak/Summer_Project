@@ -97,9 +97,6 @@ $url = 'pictures/newimage.png'; // Replace with the actual path to your image
 
       
     </div>
-    <div style="font-weight: bold; font-size: larger; position: absolute; bottom: 20px;">
-    If SuperAdmin, <span style="background-color: orange; color: blue;"><a href="superadminLogin.php" style="color: inherit;">Click Here</a></span>
-</div>
 
 
 <script>

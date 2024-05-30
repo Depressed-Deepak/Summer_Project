@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <?php
 include('connection.php');
 session_start();
@@ -38,18 +35,22 @@ if (isset($_SESSION['username'])) {
         echo "Error: " . mysqli_error($conn);
     }
 }
+
+// Initialize variables
 $selectedSeats = "";
+$selectedperson = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Storing the message in a local variable
     $message = "Congratulations!! Your data has been recorded.";
 
-    // Retrieve the selected value of seats from the form submission
+    // Retrieve the selected value of seats and persons from the form submission
     $selectedSeats = $_POST['seats'];
+    $selectedperson = $_POST['person'];
 
     // Construct the SQL query
-    $sql2 = "INSERT INTO seat_db (`Name`, `Phone_Number`, `No_of_Seats`) VALUES ('$username', '$phoneNumber', '$selectedSeats')";
+    $sql2 = "INSERT INTO seat_db (`Name`, `Phone_Number`, `No_of_Sitter`, `Person` ) VALUES ('$username', '$phoneNumber', '$selectedSeats', '$selectedperson')";
 
     // Execute the query
     if (mysqli_query($conn, $sql2)) {
@@ -57,12 +58,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('$message')</script>";
         // Redirect to another page
         echo '<script>window.location.href = "userOrAdmin.php";</script>';
+        session_unset();
+        session_destroy();
         exit(); // Ensure that no other code is executed after the redirection
+
     } else {
         echo "Error: " . mysqli_error($conn);
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -135,14 +138,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
+       /* Style for the footer */
+       .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2><?php echo "Hello " . $firstName ?>, Please Select Number of Seats</h2>
+        <h2>Please Select the options: </h2>
         <form action="" method="post">
-            <label for="seats">Number of Seats: <?php echo $phoneNumber ?> </label>
+            <label for="seats">How many sitter?:</label>
             <select name="seats" id="seats">
                 <option value="1" <?php if ($selectedSeats == "1") echo "selected"; ?>>1</option>
                 <option value="2" <?php if ($selectedSeats == "2") echo "selected"; ?>>2</option>
@@ -151,9 +165,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="5" <?php if ($selectedSeats == "5") echo "selected"; ?>>5</option>
                 <!-- Add more options as needed -->
             </select>
+            <label for="person">How many person?:</label>
+            <select name="person" id="person">
+                <option value="1" <?php if ($selectedperson == "1") echo "selected"; ?>>1</option>
+                <option value="2" <?php if ($selectedperson == "2") echo "selected"; ?>>2</option>
+                <option value="3" <?php if ($selectedperson == "3") echo "selected"; ?>>3</option>
+                <option value="4" <?php if ($selectedperson == "4") echo "selected"; ?>>4</option>
+                <option value="5" <?php if ($selectedperson == "5") echo "selected"; ?>>5</option>
+                <!-- Add more options as needed -->
+            </select>
             <input type="submit" value="Submit">
         </form>
     </div>
+
+    <div class="footer">
+        <p>Disclaimer, The fee structure is all according to the Nepal Hostel Association (NeHA).<p>
+        <p>For information about rules and regulation as well as fee structure <span style="background-color: #ccc; font-weight: bold; color: blue; ">
+        <a href="ruleandfee.php" style="color: inherit;">Click Here</a></span></p>
+    </div>
+
 </body>
 
 </html>
