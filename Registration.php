@@ -1,4 +1,6 @@
 <?php
+include "connection.php";
+
 // define variables and set to empty values
 $nameErr = $ageErr = $emailErr = $phoneErr = $passwordErr = $cpasswordErr = $addressErr = $occupationErr = $genderErr = "";
 $name = $age = $email = $phone = $password = $cpassword = $address = $occupation = $gender = "";
@@ -106,13 +108,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If there are no validation errors, proceed with database insertion
     if (empty($nameErr) && empty($ageErr) && empty($emailErr) && empty($phoneErr) && empty($passwordErr) && empty($cpasswordErr)
      && empty($addressErr) && empty($occupationErr) && empty($genderErr)) {
-        // Create connection
-        $conn = new mysqli("localhost", "root", "", "summer_project");
+    
+        $my_query = "select * from db_table where Phone_Number = '$phone'";
+        $result = mysqli_query($conn, $my_query);
 
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        } else {
+        if(mysqli_num_rows($result) > 0){
+            ?>
+            <script>alert('Phone number is already in use');
+            
+            </script>
+        <?php
+        }
+        else{
             $stmt = $conn->prepare("insert into db_table(`username`, `age`, `email` , `Phone_Number`, `Password`, `Address`, `Occupation`,`Gender`)
             values(?,?,?,?,?,?,?,?)");
 
@@ -131,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->close();
         }
     }
-}
+    }
 ?>
 
 <!DOCTYPE html>

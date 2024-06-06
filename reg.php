@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,13 +52,13 @@
             max-width: 1200px;
             margin: 40px auto;
             overflow-x: auto;
-            padding: 20px;
+            padding: 24px;
             background-color: #fff;
             border: 1px solid #ddd;
             box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             font-weight: bold;
-            font-size: large;
+            font-size: medium;
         }
         table {
             width: 100%;
@@ -112,42 +111,37 @@
 <body>
     <header>Admin Page
     <nav>
-        <a href="reg.php">Registered-Users</a>
+        <a href="dashboard.php">Staying</a>
         <a href="logout.php">Logout</a>
     </nav>
     </header>
-    <?php
+
+<?php
     // Include the database connection file
     include('connection.php');
 
     // Start the session
     session_start();
 
-    // Check if the user is logged in
-    if (!isset($_SESSION['username'])) {
-        // Redirect to login page if not logged in
-        header('Location: login.php');
-        exit();
-    }
-
-    $username = $_SESSION['username'];
-    $sql = "SELECT * from seat_db";
+$sql = "SELECT * from db_table";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        echo "<div class='table-container'><table><tr><th>ID</th><th>Name</th><th>Phone Number</th><th>No_of_Sitter</th><th>Person</th><th>Delete</th></tr>";
+        echo "<div class='table-container'><table><tr><th>ID</th><th>Username</th><th>Age</th><th>Email</th><th>Phone_Number</th><th>Password</th><th>Address</th><th>Occupation</th><th>Gender</th><th>Action</th></tr>";
         // output data of each row
         while($row = $result->fetch_assoc()) {
-            echo "<tr><td>".$row["ID"]."</td><td>".$row["Username"]."</td><td>".$row["Phone_Number"]."</td><td>".$row["No_of_Sitter"]."</td><td>".$row["Person"]. "</td><td><input type=\"button\" value=\"Delete\" onclick='deleteRow(".$row["ID"].")'></td></tr>";
+            echo "<tr><td>".$row["ID"]."</td><td>".$row["Username"]."</td><td>".$row["Age"]."</td><td>".$row["Email"]."</td><td>".$row["Phone_Number"]."</td><td>".$row["Password"]. "</td><td>".$row["Address"]. "</td><td>".$row["Occupation"].
+            "</td><td>".$row["Gender"]."</td><td><input type=\"button\" value=\"Delete\" onclick='deleteRow(".$row["ID"].")'></td></tr>";
         }
         echo "</table></div>";
     } else {
         echo "0 results";
     }
 
+    $conn->close();
    ?>
 
-    <script>
+<script>
     function deleteRow(id) {
         // Add your delete functionality here
         alert('Delete button clicked for ID: ' .id);

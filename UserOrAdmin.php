@@ -1,7 +1,3 @@
-<?php
-$url = 'pictures/newimage.png'; // Replace with the actual path to your image
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +11,7 @@ $url = 'pictures/newimage.png'; // Replace with the actual path to your image
             text-align: center;
             margin: 0;
             padding: 20px;
-            background-image: url('<?php echo $url; ?>');
+            background-image: url('pictures/newimage.png');
             background-size: cover;
             align-items: center;
             display: flex;

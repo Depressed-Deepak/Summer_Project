@@ -1,146 +1,168 @@
 <?php
+include 'connection.php';
 session_start();
-include('connection.php');
 
-// Initialize response
-$response = array("status" => "error", "message" => "An unknown error occurred.");
+$username = $_SESSION['username'];
 
-// Check if the username is set in the session
-if (isset($_SESSION['username'])) {
-    $username = $_SESSION['username'];
+// Fetch phone number based on username
+$phone = null;
+$sql_phone = "SELECT Phone_Number FROM seat_db WHERE Username = ?";
+$stmt_phone = $conn->prepare($sql_phone);
+$stmt_phone->bind_param('s', $username);
+$stmt_phone->execute();
+$result_phone = $stmt_phone->get_result();
 
-    // Split the full name by space
-    $nameParts = explode(' ', $_SESSION['username']);
-
-    // Get the first part of the name (the first name)
-    $firstName = strtoupper($nameParts[0]);
-
-    // Create the SQL delete query
-    $sql = "DELETE FROM seat_db WHERE Name = ?";
-
-    // Prepare the statement
-    if ($stmt = mysqli_prepare($conn, $sql)) {
-        // Bind the username parameter to the query
-        mysqli_stmt_bind_param($stmt, "s", $username);
-
-        // Execute the statement
-        if (mysqli_stmt_execute($stmt)) {
-            // Check the number of affected rows
-            if (mysqli_stmt_affected_rows($stmt) > 0) {
-                // Success
-                $response = array("status" => "success", "message" => "Reservation deleted successfully.");
-            } else {
-                // No rows affected, meaning no matching reservation was found
-                $response = array("status" => "error", "message" => "No matching reservation found to delete.");
-            }
-        } else {
-            // Error
-            $response = array("status" => "error", "message" => "Error executing query: " . mysqli_stmt_error($stmt));
-        }
-
-        // Close the statement
-        mysqli_stmt_close($stmt);
-    } else {
-        $response = array("status" => "error", "message" => "Error preparing statement: " . mysqli_error($conn));
-    }
-
-    // Close the connection
-    mysqli_close($conn);
-} else {
-    $response = array("status" => "error", "message" => "No username found in session.");
+if ($result_phone->num_rows > 0) {
+    $row = $result_phone->fetch_assoc();
+    $phone = $row['Phone_Number'];
 }
 
-?>
+$stmt_phone->close();
 
+// Check if the phone number exists in the db_table
+$phoneExists = false;
+if ($phone) {
+    $my_query = "SELECT * FROM seat_db WHERE Phone_Number = ?";
+    $stmt = $conn->prepare($my_query);
+    $stmt->bind_param('s', $phone);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $phoneExists = true;
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservation Page</title>
+    <title>Welcome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            background-image: url('pictures/reserveback.jpg');
-        }
 
+     body {
+    text-align: center;
+    
+    margin: 0;
+    overflow: hidden; /* Prevent scrolling */
+    background-image: url('pictures/LOTR.jpg');
+}
+
+header {
+    padding-top: 0px; /* Move the padding from body to header */
+    height: 50px;
+}
+
+nav {
+    background-color: #4CAF50;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+nav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+nav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 230px;
+            padding: 40px;
+            background-color: burlywood;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            opacity: 1;
+            font-weight: bolder;
+            font-size: 30px;
+        }
         h1 {
+            font-size: 30px;
             margin-bottom: 20px;
-            color: #333;
         }
-
         .button-container {
-            display: flex;
-            gap: 20px;
+            margin-top: 30px;
         }
-
-        button {
-            padding: 15px 30px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
+        .button-container button {
+            padding: 20px 30px;
+            margin: 10px;
+            font-size: 20px;
+            cursor: pointer;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            color: white;
+            background-color: #007bff;
             transition: background-color 0.3s ease;
         }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .delete-btn {
+        .button-container .delete-btn {
             background-color: #dc3545;
         }
-
-        .delete-btn:hover {
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+        .button-container .delete-btn:hover {
             background-color: #c82333;
         }
-    </style>
+    </style> 
 </head>
 <body>
-    <h1>Welcome, <?php echo $firstName ."<br>What would you like to do ?"?><h1>
-    
-    <div class="button-container">
-        <button onclick="makeReservation()">Make Reservation</button>
-        <button class="delete-btn" onclick="deleteReservation()">Delete Reservation</button>
+<header>
+    <nav>
+        <a href="contact.php">Contact us</a>
+        <a href="aboutUs.php">About Us</a>
+        <a href="logout.php">Logout</a>
+    </nav>
+    </header>
+    <div class="container">
+        <h1>Welcome, <?php echo htmlspecialchars($username); ?><br>What would you like to do?</h1>
+
+        <div class="button-container">
+            <button onclick="makeReservation()">Make Reservation</button>
+            <button class="delete-btn" onclick="editReservation()">Edit Reservation</button>
+        </div>
     </div>
 
     <script>
-        function makeReservation() {
+    var phoneExists = <?php echo json_encode($phoneExists); ?>;
+
+    function makeReservation() {
+        console.log('makeReservation called');
+        if (phoneExists) {
+            alert('Phone number is already in use');
+        } else {
             window.location.href = 'seatBook.php';
         }
+    }
 
-        function deleteReservation() {
-            if (confirm('Are you sure you want to delete your reservation?')) {
-                // Make an AJAX request to deleteReservation.php
-                fetch('deleteReservation.php', {
-                    method: 'POST',
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data); // Debugging line to check the response
-                    alert(data.message);
-                    if (data.status === 'success') {
-                        // Optionally, redirect to another page or update the UI
-                        window.location.href = 'index.php'; // or any other page
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Reservation deleted successfully.');
-                    window.location.href = 'UserOrAdmin.php';
-                });
-            }
+    function editReservation() {
+        console.log('editReservation called');
+        if (phoneExists) {
+            window.location.href = 'editPage.php';
+        } else {
+            alert('No record was found.');
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>

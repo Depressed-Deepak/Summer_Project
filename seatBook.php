@@ -2,6 +2,8 @@
 include('connection.php');
 session_start();
 
+$date = date("Y-m");
+
 // Check if the username is set in the session
 if (isset($_SESSION['username'])) {
 
@@ -39,6 +41,7 @@ if (isset($_SESSION['username'])) {
 // Initialize variables
 $selectedSeats = "";
 $selectedperson = "";
+$selectedDate = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -48,9 +51,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve the selected value of seats and persons from the form submission
     $selectedSeats = $_POST['seats'];
     $selectedperson = $_POST['person'];
+    $selectedDate = $_POST['month'];
 
+    if($selectedDate > $date){
+
+    if($selectedSeats >= $selectedperson){
     // Construct the SQL query
-    $sql2 = "INSERT INTO seat_db (`Name`, `Phone_Number`, `No_of_Sitter`, `Person` ) VALUES ('$username', '$phoneNumber', '$selectedSeats', '$selectedperson')";
+    $sql2 = "INSERT INTO seat_db (`Username`, `Phone_Number`, `No_of_Sitter`, `Person`,`Date`) VALUES ('$username', '$phoneNumber', '$selectedSeats', '$selectedperson', '$selectedDate')";
 
     // Execute the query
     if (mysqli_query($conn, $sql2)) {
@@ -65,6 +72,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Error: " . mysqli_error($conn);
     }
+}
+else{
+    echo '<script>alert("Person cannot be less than Seats");</script>';
+}
+}
+else{
+    echo  '<script>alert("Please Enter a Valid ")</script>';
+}
 }
 ?>
 
@@ -81,6 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 0;
             padding: 0;
             background-image: url('pictures/hostel_image.jpg');
+            object-fit: fill;
             background-size: cover;
             /* background-position: center;     */
         }
@@ -111,6 +127,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            appearance: none;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+        }
+
+        #monthInput{
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -157,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Please Select the options: </h2>
         <form action="" method="post">
             <label for="seats">How many sitter?:</label>
-            <select name="seats" id="seats">
+            <select name="seats" id="seats" required>
                 <option value="1" <?php if ($selectedSeats == "1") echo "selected"; ?>>1</option>
                 <option value="2" <?php if ($selectedSeats == "2") echo "selected"; ?>>2</option>
                 <option value="3" <?php if ($selectedSeats == "3") echo "selected"; ?>>3</option>
@@ -166,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Add more options as needed -->
             </select>
             <label for="person">How many person?:</label>
-            <select name="person" id="person">
+            <select name="person" id="person" required>
                 <option value="1" <?php if ($selectedperson == "1") echo "selected"; ?>>1</option>
                 <option value="2" <?php if ($selectedperson == "2") echo "selected"; ?>>2</option>
                 <option value="3" <?php if ($selectedperson == "3") echo "selected"; ?>>3</option>
@@ -174,6 +203,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="5" <?php if ($selectedperson == "5") echo "selected"; ?>>5</option>
                 <!-- Add more options as needed -->
             </select>
+            <label for="month">Select month</label>
+            <input type="month" id="monthInput" name="month" id="month" required >
             <input type="submit" value="Submit">
         </form>
     </div>
@@ -185,5 +216,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
 </body>
+
+<script>
+    window.onload = function() {
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = today.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        var minDate = year + '-' + month;
+        document.getElementById('monthInput').setAttribute('min', minDate);
+    };
+</script>
+
 
 </html>
