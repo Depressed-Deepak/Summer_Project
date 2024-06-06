@@ -150,7 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Registration Form</title>
     <style>
         .error {
-            color: orange;
+            color: cyan;
             font-weight: bold;
         }
     </style>
@@ -165,25 +165,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="user-details">
                     <div class="input-box">
                         <span class="details" style="font-weight: bold;">Full Name / User Name</span>
-                        <input type="text" placeholder="Enter your name" name="name" required>
+                        <input type="text" placeholder="Enter your name" name="name" value="<?php echo $name ?>" required>
                         <span class="error"><?php echo $nameErr; ?></span>
                     </div>
 
                     <div class="input-box">
                         <span class="details" style="font-weight: bold;">Age</span>
-                        <input type="text" placeholder="Enter your Age" name="age" required>
+                        <input type="text" placeholder="Enter your Age" name="age" value="<?php echo $age ?>" required>
                         <span class="error"><?php echo $ageErr; ?></span>
                     </div>
 
                     <div class="input-box">
                         <span class="details" style="font-weight: bold;">Email</span>
-                        <input type="email" placeholder="Enter your email" name="email" required>
+                        <input type="email" placeholder="Enter your email" name="email" value="<?php echo $email ?>" required>
                         <span class="error"><?php echo $emailErr; ?></span>
                     </div>
 
                     <div class="input-box">
                         <span class="details" style="font-weight: bold;">Phone Number</span>
-                        <input type="tel" placeholder="Enter your number" name="pnumber" required>
+                        <input type="tel" placeholder="Enter your number" name="pnumber" value="<?php echo $phone ?>" required>
                         <span class="error"><?php echo $phoneErr; ?></span>
                     </div>
 
@@ -201,21 +201,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="input-box">
                         <span class="details" style="font-weight: bold;">Address</span>
-                        <input type="text" placeholder="Confirm your Address" name="address" required>
+                        <input type="text" placeholder="Confirm your Address" name="address" value="<?php echo $address ?>" required>
                         <span class="error"><?php echo $addressErr; ?></span>
                     </div>
 
                     <div class="input-box">
                         <span class="details" style="font-weight: bold;">Occupation</span>
-                        <input type="text" placeholder="What is your Occupation ?" name="occupation" required>
+                        <input type="text" placeholder="What is your Occupation ?" name="occupation" value="<?php echo $occupation ?>" required>
                         <span class="error"><?php echo $occupationErr; ?></span>
                     </div>
 
                 </div>
                 <div class="gender-details" style="font-weight: bold;">
-                    <input type="radio" name="gender" id="dot-1" value="male">
-                    <input type="radio" name="gender" id="dot-2" value="female">
-                    <input type="radio" name="gender" id="dot-3" value="Others">
+                    <input type="radio" name="gender[]" id="dot-1" value="male">
+                    <input type="radio" name="gender[]" id="dot-2" value="female">
+                    <input type="radio" name="gender[]" id="dot-3" value="Others">
                     <span class="gender-title" style="font-weight: bold;">Gender</span>
                     <div class="category">
                         <label for="dot-1">
@@ -224,11 +224,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </label>
                         <label for="dot-2">
                             <span class="dot two"></span>
-                            <span class="gender" name="female">Female</span>
+                            <span class="gender" name="female" >Female</span>
                         </label>
                         <label for="dot-3">
                             <span class="dot three"></span>
-                            <span class="gender" name="Others">Prefer not to say</span>
+                            <span class="gender" name="Others"> >Prefer not to say</span>
                         </label>
                     </div>
                     <span class="error"><?php echo $genderErr; ?></span>

@@ -96,6 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 16px;
             box-sizing: border-box;
             border-radius: 8px;
+            font-weight: bold;
+            font-size: large;
         }
 
         .login-container button {
@@ -126,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>User Sign-in</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text"  id="username" name="username"  required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <div style="padding: 5px;"> Don't Have an Account, <a href="Registration.php" target="_blank">Sign-Up</a></div>

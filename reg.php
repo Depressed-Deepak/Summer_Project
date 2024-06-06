@@ -143,8 +143,18 @@ $sql = "SELECT * from db_table";
 
 <script>
     function deleteRow(id) {
-        // Add your delete functionality here
-        alert('Delete button clicked for ID: ' .id);
+        if (confirm('Are you sure you want to delete this record?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "regdelete.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    alert(xhr.responseText);
+                    location.reload(); // Refresh the page to show the updated table
+                }
+            };
+            xhr.send("id=" + id);
+        }
     }
     </script>
 </body>

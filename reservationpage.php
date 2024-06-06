@@ -40,73 +40,82 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            object-fit: fill;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+            /* Prevent scrolling */
+            background-image: url('pictures/newseat.jpg');
+        }
 
-     body {
-    text-align: center;
-    
-    margin: 0;
-    overflow: hidden; /* Prevent scrolling */
-    background-image: url('pictures/LOTR.jpg');
-}
+        header {
+            padding-top: 0px;
+            /* Move the padding from body to header */
+            height: 50px;
+        }
 
-header {
-    padding-top: 0px; /* Move the padding from body to header */
-    height: 50px;
-}
+        nav {
+            background-color: #4CAF50;
+            overflow: hidden;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px;
+            height: 50px;
+        }
 
-nav {
-    background-color: #4CAF50;
-    overflow: hidden;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 6px 8px;
+            text-decoration: none;
+            margin-left: 14px;
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: medium;
+        }
 
-nav a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    margin-right: 10px;
-    font-weight: bold;
-    font-size: xx-large;
-}
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
 
-nav a:hover {
-    background-color: #ddd;
-    color: black;
-}
         .container {
-            max-width: 600px;
+            max-width: fit-content;
             margin: 0 auto;
             margin-top: 230px;
-            padding: 40px;
+            padding: 20px;
             background-color: burlywood;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             opacity: 1;
-            font-weight: bolder;
-            font-size: 30px;
+            font-weight: bold;
+            font-size: 10px;
+            font-family: poppins;
         }
+
         h1 {
             font-size: 30px;
             margin-bottom: 20px;
         }
+
         .button-container {
             margin-top: 30px;
         }
+
         .button-container button {
-            padding: 20px 30px;
+            padding: 12px 15px;
             margin: 10px;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
@@ -114,24 +123,28 @@ nav a:hover {
             background-color: #007bff;
             transition: background-color 0.3s ease;
         }
+
         .button-container .delete-btn {
             background-color: #dc3545;
         }
+
         .button-container button:hover {
             background-color: #0056b3;
         }
+
         .button-container .delete-btn:hover {
             background-color: #c82333;
         }
-    </style> 
+    </style>
 </head>
+
 <body>
-<header>
-    <nav>
-        <a href="contact.php">Contact us</a>
-        <a href="aboutUs.php">About Us</a>
-        <a href="logout.php">Logout</a>
-    </nav>
+    <header>
+        <nav>
+            <a href="contact.php">Contact us</a>
+            <a href="aboutUs.php">About Us</a>
+            <a href="logout.php">Logout</a>
+        </nav>
     </header>
     <div class="container">
         <h1>Welcome, <?php echo htmlspecialchars($username); ?><br>What would you like to do?</h1>
@@ -143,26 +156,27 @@ nav a:hover {
     </div>
 
     <script>
-    var phoneExists = <?php echo json_encode($phoneExists); ?>;
+        var phoneExists = <?php echo json_encode($phoneExists); ?>;
 
-    function makeReservation() {
-        console.log('makeReservation called');
-        if (phoneExists) {
-            alert('Phone number is already in use');
-        } else {
-            window.location.href = 'seatBook.php';
+        function makeReservation() {
+            console.log('makeReservation called');
+            if (phoneExists) {
+                alert('Phone number is already in use');
+            } else {
+                window.location.href = 'seatBook.php';
+            }
         }
-    }
 
-    function editReservation() {
-        console.log('editReservation called');
-        if (phoneExists) {
-            window.location.href = 'editPage.php';
-        } else {
-            alert('No record was found.');
+        function editReservation() {
+            console.log('editReservation called');
+            if (phoneExists) {
+                window.location.href = 'editPage.php';
+            } else {
+                alert('No record was found.');
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
+
 </html>

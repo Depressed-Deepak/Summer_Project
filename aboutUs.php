@@ -60,6 +60,13 @@ h3 {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
+.team-member img {
+            max-width: 100%; /* Ensure the image doesn't overflow its container */
+            height: auto;
+            border-radius: 50%; /* Make the image circular */
+            margin-bottom: 15px;
+        }
+
 
 .team-member:hover {
   transform: scale(1.05);
@@ -115,14 +122,17 @@ h3 {
         <h1  style=" background-color: blueviolet;">Our Team</h1>
         <div class="team-members" >
             <div class="team-member" >
+            <img src="pictures/gimli.png" alt="Owner">
                 <h3>Deepak Poudel</h3>
                 <p>With over 10 years of experience in hostel management, Deepak is responsible for overseeing the day-to-day operations of the hostel.</p>
             </div>
-            <div class="team-member" >
+            <div class="team-member">
+            <img src="pictures/pew.jpg" alt="Assistant Manager">
                 <h3>Assistant Manager</h3>
                 <p>Pewdiepie is responsible for managing the front desk and ensuring that our residents have a smooth and enjoyable stay.</p>
             </div>
             <div class="team-member">
+            <img src="pictures/dave2d.jpg" alt="Maintenance Manager">
                 <h3>Maintenance Manager</h3>
                 <p>Dave2D is responsible for ensuring that the hostel is well-maintained and that any issues are addressed promptly.</p>
             </div>
